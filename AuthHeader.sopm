@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<otrs_package version="1.0">
+    <Name>AuthHeader</Name>
+    <Version>0.0.1</Version>
+    <Framework>6.0.x</Framework>
+    <Vendor>terreActive AG</Vendor>
+    <URL>http://www.terreactive.ch/</URL>
+    <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
+    <Description Lang="en">Passwordless login by HTTP header</Description>
+    <Description Lang="de">Ohne Passwort einloggen mittels HTTP-Header</Description>
+    <BuildDate>?</BuildDate>
+    <BuildHost>?</BuildHost>
+    <Filelist>
+        <File Permission="660" Location="doc/en/AuthHeader.pod" />
+        <File Permission="660" Location="Kernel/System/Auth/Header.pm" />
+        <File Permission="660" Location="Kernel/System/CustomerAuth/Header.pm" />
+        <File Permission="660" Location="Kernel/Config/Files/XML/CustomerAuthHeader.xml" />
+    </Filelist>
+</otrs_package>

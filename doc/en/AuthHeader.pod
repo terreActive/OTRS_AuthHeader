@@ -1,0 +1,3 @@
+This OPM package provides simple Authentication modules that allow 
+password-less login. They are meant to be used behind some security
+firewall that does the authentication.
