@@ -1,9 +1,11 @@
-<ConfigItem Name="AuthModule" Required="1" Valid="1">
-    <Description Lang="en">Module to authenticate customer users by HTTP headers.</Description>
-    <Description Lang="de">Modul zum Authentifizieren der Kundenbenutzer durch HTTP-Header.</Description>
-    <Group>Framework</Group>
-    <SubGroup>Frontend::CustomerAuth</SubGroup>
-    <Setting>
-        <Option Location="Kernel/System/CustomerAuth/*.pm" SelectedID="Kernel::System::CustomerAuth::Header"></Option>
+<?xml version="1.0" encoding="utf-8"?>
+<otrs_config version="2.0" init="Application">
+    <Setting Name="Customer::AuthModule::Header::Env" Required="1" Valid="1" ConfigLevel="200">
+        <Description Lang="en">The HTTP header that contains the authenticated customer user's login name.</Description>
+        <Description Lang="de">Der HTTP-Header, welcher den Login-Namen des authentifizierten Kundenbenutzers enthält.</Description>
+        <Navigation>Core::Auth::Customer</Navigation>
+        <Value>
+            <Item ValueType="String" ValueRegex="">X_OTRS_CUSTOMERUSER</Item>
+        </Value>
     </Setting>
-</ConfigItem>
+</otrs_config>

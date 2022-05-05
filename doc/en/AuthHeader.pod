@@ -1,3 +1,108 @@
 This OPM package provides simple Authentication modules that allow 
 password-less login. They are meant to be used behind some security
 firewall that does the authentication.
+=pod
+
+=encoding utf-8
+
+=head1 NAME
+
+AuthHeader - an OTRS authentication module
+
+=head1 DESCRIPTION
+
+L<AuthHeader> is a collection of very simple authentication modules
+for use with OTRS version 6. They allow passwordless agent and customer
+user login, based on the presence of a particular environment variable.
+The environment is supposed to be set by parsing a HTTP request header.
+
+=head1 Configuration: agent user
+
+Agent user login configuration should only be done in Kernel/Config.pm
+in order to avoid GUI user self lock-out. Enable AuthHeader for agents
+by adding the declarations:
+
+  $Self->{'AuthModule'} = 'Kernel::System::Auth::Header';
+  $Self->{'AuthModule::Header::Env'} = 'X_OTRS_AGENT';
+
+to Kernel/Config.pm, where "X_OTRS_AGENT" is the name of the environment
+variable holding the authenticated agent users's OTRS login name (see
+webserver configuration below).
+
+If there are other authentication modules to be used in a stack, the
+AuthHeader module can be used in any slot from 1 to 10:
+
+  $Self->{'AuthModule1'} = 'Kernel::System::Auth::Header';
+  $Self->{'AuthModule::Header::Env1'} = 'X_OTRS_AGENT';
+
+
+=head1 Configuration: customer user
+
+Customer user authentication settings are configured in the usual OTRS
+SysConfig mechanism. An agent in the group "admin" must navigate to
+Admin->System Configration->Core->Auth->Customer and change the setting
+L<Customer::AuthModule> to Kernel::System::Customer::Auth::Header.
+
+The setting L<Customer::AuthModule::Header::Env> must contain the name
+of the environment variable that contains the authenticated customer
+user's login name (see webserver configuration below).
+
+Alternatively, the settings can be changed from the command line:
+
+    bin/otrs.Console.pl Admin::Config::Update --setting-name Customer::AuthModule --value Kernel::System::CustomerAuth::Header
+    bin/otrs.Console.pl Admin::Config::Update --setting-name Customer::AuthModule::Header::Env --value X_OTRS_CUSTOMERUSER
+
+=head1 Apache configuration
+
+The following example is for Ubuntu's /etc/apache2/site-available 
+mechanism:
+
+    <VirtualHost *:443>
+        ServerName ...
+        SSLEngine on
+        SSLCertificateFile ...
+        SSLCertificateKeyFile ...
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        <IfModule mod_perl.c>
+            # parse headers only for selected scripts
+            <Location /otrs>
+                AuthType ...
+                AuthName "...
+                Require valid-user
+                PerlOptions -ParseHeaders
+                PerlOptions -SetupEnv
+            </Location>
+            # Agent user
+            <Location /otrs/index.pl>
+                SetEnvIf X_OTRS_AGENT "^(.*)$" X_OTRS_AGENT=$1
+                PerlOptions +ParseHeaders
+                PerlOptions +SetupEnv
+            </Location>
+            # Customer user
+            <Location /otrs/customer.pl>
+                SetEnvIf X_OTRS_AGENT "^(.*)$" X_OTRS_CUSTOMERUSER=$1
+                PerlOptions +ParseHeaders
+                PerlOptions +SetupEnv
+            </Location>
+        </IfModule>
+    </VirtualHost>
+
+Enable the apache configuration provided by OTRS:
+
+    ln -s /opt/otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-available/
+    a2enconf apache2-httpd.include
+    apache2ctl restart
+
+=head1 COPYRIGHT AND LICENCE
+
+Copyright (c) 2022 by Othmar Wigger <othmar.wigger@terreactive.ch>
+
+This is free software; you can redistribute it and/or modify it under
+the Gnu Affero General Public License version 3.
+
+This package is provided "as is" and without any express or implied
+warranties, including, without limitation, the implied warranties of
+merchantibility and fitness for a particular purpose.
+
+=cut
+
