@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <otrs_config version="2.0" init="Application">
     <Setting Name="Customer::AuthModule::Header::Env" Required="1" Valid="1" ConfigLevel="200">
-        <Description Lang="en">The HTTP header that contains the authenticated customer user's login name.</Description>
-        <Description Lang="de">Der HTTP-Header, welcher den Login-Namen des authentifizierten Kundenbenutzers enthält.</Description>
+        <Description Lang="en">If "Kernel::System::CustomerAuth::Header" is selected for Customer::AuthModule, the HTTP header that contains the authenticated customer user's login name must be specified.</Description>
+        <Description Lang="de">Wenn bei Customer::AuthModule "Kernel::System::CustomerAuth::Header" ausgewählt ist, muss hier der HTTP-Header, welcher den Login-Namen des authentifizierten Kundenbenutzers enthält, angegeben werden.</Description>
         <Navigation>Core::Auth::Customer</Navigation>
         <Value>
             <Item ValueType="String" ValueRegex="">X_OTRS_CUSTOMERUSER</Item>
