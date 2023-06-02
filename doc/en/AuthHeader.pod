@@ -54,48 +54,16 @@ Alternatively, the settings can be changed from the command line:
 
 =head1 Apache configuration
 
-The following example is for Ubuntu's /etc/apache2/site-available 
-mechanism:
-
-    <VirtualHost *:443>
-        ServerName ...
-        SSLEngine on
-        SSLCertificateFile ...
-        SSLCertificateKeyFile ...
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-        <IfModule mod_perl.c>
-            # parse headers only for selected scripts
-            <Location /otrs>
-                AuthType ...
-                AuthName "...
-                Require valid-user
-                PerlOptions -ParseHeaders
-                PerlOptions -SetupEnv
-            </Location>
-            # Agent user
-            <Location /otrs/index.pl>
-                SetEnvIf X_OTRS_AGENT "^(.*)$" X_OTRS_AGENT=$1
-                PerlOptions +ParseHeaders
-                PerlOptions +SetupEnv
-            </Location>
-            # Customer user
-            <Location /otrs/customer.pl>
-                SetEnvIf X_OTRS_AGENT "^(.*)$" X_OTRS_CUSTOMERUSER=$1
-                PerlOptions +ParseHeaders
-                PerlOptions +SetupEnv
-            </Location>
-        </IfModule>
-    </VirtualHost>
-
-Enable the apache configuration provided by OTRS:
+Enable the apache configuration provided by OTRS/Znuny and by AuthHeader:
 
     ln -s /opt/otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-available/
-    a2enconf apache2-httpd.include
+    ln -s /opt/otrs/scripts/apache2-authheader.include.conf /etc/apache2/conf-available/
+    a2enconf apache2-httpd.include apache2-authheader.include
     apache2ctl restart
 
 =head1 COPYRIGHT AND LICENCE
 
-Copyright (c) 2022 by Othmar Wigger <othmar.wigger@terreactive.ch>
+Copyright (c) 2023 by Othmar Wigger <othmar.wigger@terreactive.ch>
 
 This is free software; you can redistribute it and/or modify it under
 the Gnu Affero General Public License version 3.

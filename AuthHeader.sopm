@@ -13,6 +13,7 @@
     <BuildHost>?</BuildHost>
     <Filelist>
         <File Permission="660" Location="doc/en/AuthHeader.pod" />
+        <File Permission="660" Location="scripts/apache2-authheader.include.conf" />
         <File Permission="660" Location="Kernel/System/Auth/Header.pm" />
         <File Permission="660" Location="Kernel/System/CustomerAuth/Header.pm" />
         <File Permission="660" Location="Kernel/Config/Files/XML/CustomerAuthHeader.xml" />
